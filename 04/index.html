@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #num{
+            width:100px;
+            display:block;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="get" id="box">
+        <input type="email" placeholder="请输入邮箱" autofocus required><br>
+        <input type="url" placeholder="请输入一个完整的网址" required><br>
+        <input type="number"value="10"  max = "40" min = "0" id="num" step="2"><br>
+        <input type="range" value = "10" min="0" max="40" id="ran" step="1"><br>
+        <input type="text" pattern="^hellow$"><br>
+        <input type="color"><br>
+        <input type="search"><br>
+        <input type="date"><br>
+        <input type="time"><br>
+        <input type="datetime-local"><br>
+        <input type="text" list="tex">
+        <datalist id="tex">
+            <option value="非"></option>
+            <option value="与"></option>
+            <option value="或"></option>
+            <option value="if"></option>
+            <option value="all"></option>
+        </datalist>
+        <input type="file" multiple>
+        <input type="submit">
+    </form>
+    <p><input type="text" form="box"></p>
+    <script >
+        let oNum = document.getElementById("num");
+        let oRan = document.getElementById("ran");
+        let max,min;
+        oRan.onmousedown = function(e){
+            e = e || event;
+            oNum.value = this.value-0;
+            let This = this;
+            document.onmousemove = function(e){
+                e = e || event;
+                oNum.value = This.value-0;
+            }
+            document.onmouseup = function(e){
+                e = e || event;
+                this.onmousemove = null;
+                this.onmouseup = null;
+            }
+        }
+        oNum.onchange = function(e){
+            e = e || event;
+            oRan.value = this.value;
+        }
+        oNum.onblur = function(e){
+            max = this.max-0;
+            min = this.min-0;
+            if(this.value<min){
+                this.value = min;
+            }else if(this.value>max){
+                this.value = max;
+            }
+        }
+    </script>
+</body>
+</html>

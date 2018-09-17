@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<!doctype html>
+<html lang="en">
+		<head>
+			<meta charset="UTF-8" />
+			<meta http-equiv="X-UA-Compatible" content="IE-edge">
+			<!--网页兼容模式-->
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<!--适应移动端的端口-->
+			<meta name="Generator" content="EditPlus®" />
+			<meta name="Author" content="月影" />
+			<meta name="Keywords" content="月影做的网页" />
+			<meta name="Description" content="付出不亚于任何人的努力！！！" />
+			<title>第一个bootstrap页面</title>
+			<style type="text/css">
+				*{
+					margin:0;
+					padding:0;
+				}
+				#img{
+					width:100px;
+					height:100px;
+					background:red;
+					position:absolute;
+					left:500px;
+					top:50px;
+				}
+			</style>
+		</head>
+		<body>
+			<div id="img"></div>
+			<script type="text/javascript">
+				var oImg = document.getElementById("img");
+				function getStyle(obj,attr){
+					return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+				}
+					
+				var mJson = {
+					"left":"0px"
+				};
+				auto(oImg,mJson,3000);
+
+				function auto(obj,mJson,time){
+					var start = {};
+					var end = {};
+					var startTime = new Date();
+					for(var key in mJson){
+						start[key] = parseInt(getStyle(obj,key));
+						end[key] = parseInt(mJson[key]);
+						var x = end[key]-start[key];
+					}
+					var timer = setInterval(function(){
+						var nowTime = new Date();
+						var T = nowTime-startTime;
+						
+
+						if(T>=time){
+							T = time;
+							clearInterval(timer)
+						}
+						
+						for(var key in mJson){
+							var s = (T*x/time)+start[key];
+							console.log(s)
+							obj.style[key] = s+"px";
+						}
+					},13)
+				}
+			</script>
+		</body>
+</html>

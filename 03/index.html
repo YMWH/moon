@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" onselectstart='return false'>
+<head>
+    <meta charset="UTF-8">
+    <title>案列库03</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="data.js"></script>
+</head>
+    <body>
+        <section id="box">
+            <nav id="list">
+                <ul></ul>
+            </nav>
+        </section>
+        <nav id="btn">
+            <ul id="btn_li">
+                <li>Table</li>
+                <li>Sphere</li>
+                <li>Helix</li>
+                <li>Grid</li>
+            </ul>
+        </nav>
+        <section id="mask">
+            <div id="center">
+                <p></p>
+                <div></div>
+                <div>
+                    <p></p>
+                    <div></div>
+                </div>
+            </div>
+        </section>
+    <script >
+        let oBox = document.getElementById("box");
+        let oList = document.getElementById("list").getElementsByTagName("ul")[0];
+        let oMask = document.getElementById("mask");
+        let oCenter = document.getElementById("center");
+        let length = 125;
+        let x,y,z,startX,startY,endX,endY,x_=0,y_=0,z_=-2000,lastX=0,lastY=0,timer,moveTime=0,timeW;
+        setTimeout(Grid,100);
+        oMask.onmousedown = function(e){
+            e = e || event;
+            e.cancelBubble = true;
+        };
+        oMask.onclick = function(){
+            oCenter.className = "hideCenter";
+            setTimeout(function(){
+                oMask.style.display = "none";
+                oCenter.className = "";
+            },1000);
+
+        }
+        for(let i = 0;i<length;i++){
+            let oLi = document.createElement("li");
+            oLi.className = "list_li";
+            oList.appendChild(oLi);
+            oLi.style.transform = "translate3D("+(Math.random()*4000-2000)+"px,"+(Math.random()*4000-2000)+"px,"+(Math.random()*5000-2500)+"px)";
+            oLi.onclick = function(){
+                oMask.style.display = "block";
+                setTimeout(function(){
+                    oCenter.className = "showCenter";
+                },50)
+            }
+        }
+//        层级布局
+        function Grid(){
+            let oLi = document.getElementsByClassName("list_li");
+            let arr = [],num;
+            for(var i=0;i<length;i++){
+                arr[i] = i;
+            }
+            for(let i = 0;i<length;i++){
+                num = Math.floor(Math.random()*arr.length);
+                x = i%5;
+                y = parseInt(i/5)%5;
+                z = parseInt(i/25);
+                oLi[arr[num]].style.transform = "translate3D("+((x-2)*(300+120))+"px,"+((y-2)*(300+160))+"px,"+((z-2)*600)+"px)";
+                arr.splice(num,1);
+            }
+
+        }
+//        螺旋布局
+        function Helix(){
+            let oLi = document.getElementsByClassName("list_li");
+            let arr = [];
+            let x;
+            for(let i = 0;i<length;i++){
+                arr[i] = i;
+            }
+            for(let i=0;i<length;i++){
+                x = Math.floor(Math.random()*arr.length);
+                oLi[arr[x]].style.transform = "rotateY("+(i*10)+"deg) translateY("+((i-length/2)*10)+"px) translateZ(800px)";
+                arr.splice(x,1);
+            }
+        }
+//        球型布局1
+        function Sphere(){
+            let arr = [1,5,11,15,18,23,19,17,10,5,1];
+            let angle = 180/(arr.length-1);
+            let index,num = 0,arr1 = [],y;
+            let oLi = document.getElementsByClassName("list_li");
+            for(let i=0;i<length;i++){
+                arr1[i] = i;
+            }
+            for(let i=0;i<length;i++){
+                y = Math.floor(Math.random()*arr1.length);
+                for(let x = 0;x<arr.length;x++){
+                    num += arr[x];
+                    if(i<=num){
+                        index = x;
+                        oLi[arr1[y]].style.transform = "rotateY("+(i*10)+"deg) rotateX("+(90-(i*angle))+"deg) translateZ(800px)";
+                        arr1.splice(y,1);
+                        break;
+                    }
+
+                }
+
+            }
+
+        }
+        //球形布局2
+
+        function Table(){
+
+            let arr = [1,5,11,15,18,25,18,15,11,5,1];
+            let angle = 180/(arr.length-1);
+            let roY,roX,y,index,layer;
+            let oLi = document.getElementsByClassName("list_li");
+            let arr1 = [];
+            for(let i=0;i<length;i++){
+                arr1[i] = i;
+            }
+            for(let i=0;i<length;i++){
+                y = Math.floor( Math.random()*arr1.length);
+                let num = 0;
+                for(let x = 0;x<arr.length;x++){
+                    num += arr[x];
+                    if((i+1)<=num){
+                        index = x;
+                        layer = i-num + arr[x];
+                        break;
+                    }
+                }
+                console.log(num)
+                roX = 90-index*angle;
+                roY = (360/arr[index])*layer;
+                oLi[arr1[y]].style.transform = "rotateY("+(roY)+"deg) rotateX("+(roX)+"deg) translateZ(700px)";
+                arr1.splice(y,1);
+            }
+
+        }
+        //左下角选择按钮
+        {
+            let oBtn = document.getElementById("btn_li").getElementsByTagName("li");
+            let btnLength = oBtn.length;
+            for(let i = 0;i<btnLength;i++){
+                oBtn[i].index = i;
+                oBtn[i].onmousedown = function(e){
+                    e.cancelBubble = true;
+                };
+                oBtn[i].onclick = function(){
+                    switch (this.index) {
+                        case 0:
+                            Table();
+                           break;
+                        case 1:
+                            Sphere();
+                            break;
+                        case 2:
+                            Helix();
+                            break;
+                        case 3:
+                            Grid();
+                            break;
+                    }
+                }
+            };
+        }
+
+        //拖动
+        {
+            document.onmousedown = function(e){
+                e = e || event;
+
+                startX = e.pageX;
+                startY = e.pageY;
+                this.onmousemove = function(e){
+                    e = e || event;
+
+                    endX = e.pageX;
+                    endY = e.pageY;
+
+                    x_ = (endX - startX)*0.1;
+                    y_ = (endY - startY)*0.1;
+
+                    lastX += x_;
+                    lastY -= y_;
+
+                    startX = e.pageX;
+                    startY = e.pageY;
+
+                    oBox.style.transform = "translate3D(-50%,-50%,"+z_+"px) rotateX("+(lastY)+"deg) rotateY("+(lastX)+"deg)"
+
+                };
+                this.onmouseup = function(){
+                    timer = setInterval(function(){
+                        x_ *= 0.95;
+                        y_ *= 0.95;
+                        lastX += x_;
+                        lastY -= y_;
+                        if(Math.abs(x_)<=0.2&&Math.abs(y_)<=0.2){
+                            clearInterval(timer);
+                        }
+                        oBox.style.transform = "translate3D(-50%,-50%,"+z_+"px) rotateX("+(lastY)+"deg) rotateY("+(lastX)+"deg)";
+                    },13);
+                    this.onmousemove = null;
+                }
+            };
+        }
+        //滚轮事件
+        {
+            if(document.onmousewheel !== undefined){
+                document.onmousewheel = scrollFn;
+            }else{
+                document.addEventListener("DOMMouseScroll",scrollFn);
+            }
+            function scrollFn(e) {
+                if(new Date()-moveTime>210){
+                    moveTime = new Date();
+                    var d = e.wheelDelta || -e.detail;
+                    d>0?zMove(1000):zMove(-1000);
+                }
+            }
+            function zMove(d){
+                clearInterval(timeW);
+                let startTime = new Date();
+                let start = z_;
+                timeW = setInterval(function(){
+                    let prop = (new Date() - startTime)/200;
+                    if(prop>=1){
+                        prop = 1;
+                        clearInterval(timeW);
+                    }
+                    z_ = start + prop*d;
+                    z_ = Math.max(-18000,z_);
+                    z_ = Math.min(205,z_);
+                    oBox.style.transform = "translate3D(-50%,-50%,"+z_+"px) rotateX("+(lastY)+"deg) rotateY("+(lastX)+"deg)";
+                },13);
+
+            }
+        }
+
+
+//        document.onmousedown = function(e){
+//            clearInterval(timer);
+//            e = e || event;
+//            startX = e.pageX;
+//            startY = e.pageY;
+//            this.onmousemove = function(e){
+//                e = e || event;
+//                endX = e.pageX;
+//                endY = e.pageY;
+//                lastX = endX - previousX;
+//                lastY = endY - previousY;
+//                x_ = (endX - startX)*0.05;
+//                y_ = (endY - startY)*0.05;
+//                oBox.style.transform = "translate3D(-50%,-50%,-3000px) rotateX("+(yUp-y_)+"deg) rotateY("+(xUp+x_)+"deg)"
+//                previousX = e.pageX;
+//                previousY = e.pageY;
+//            };
+//            this.onmouseup = function(){
+//                xUp = xUp+x_;
+//                yUp = yUp-y_;
+//                timer = setInterval(function(){
+//                    lastX *= 0.95;
+//                    lastY *= 0.95;
+//                    yUp -= lastY*0.15;
+//                    xUp += lastX*0.15;
+//                    if(Math.abs(lastX)<=0.1&&Math.abs(lastY)<=0.1){
+//                        clearInterval(timer);
+//                    };
+//                    oBox.style.transform = "translate3D(-50%,-50%,-3000px) rotateX("+yUp+"deg) rotateY("+(xUp+10)+"deg)"
+//                },13);
+//                this.onmousemove = null;
+//            };
+//        }
+    </script>
+</body>
+</html>

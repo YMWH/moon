@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" onselectstart='return false'>
+<head>
+    <meta charset="UTF-8">
+    <title>案列02</title>
+    <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+    <nav id="list">
+        <ul>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+            <li class="list_li"></li>
+        </ul>
+        <section id="footer"></section>
+    </nav>
+
+    <script >
+        let oList = document.getElementById("list");
+        let oLi = document.getElementsByClassName("list_li");
+        let length = oLi.length;
+        let horn = 360/length;
+        let startX,startY,endX,endY,x_=-10,y_=0,x,y,lastX,lastY,nX,nY,timer;
+        for (let i = 0;i<length;i++) {
+            oLi[i].style.transform = "rotateY("+i*horn+"deg) translateZ(350px)";
+            oLi[i].style.backgroundImage = "url(img/"+(i+1)+".jpg)";
+        }
+        document.onmousedown = function(e){
+            clearInterval(timer);
+            e = e || event;
+            startX = e.pageX;
+            startY = e.pageY;
+            this.onmousemove = function(e){
+                e = e || event;
+                x = e.pageX;
+                y = e.pageY;
+                nX = x - lastX;
+                nY = y - lastY ;
+                endX = (x-startX)*0.1;
+                endY = (y-startY)*0.1;
+                oList.style.transform = "translate(-50%,-65%) rotateX("+(x_-endY)+"deg) rotateY("+(y_+endX)+"deg)";
+                lastX = e.pageX;
+                lastY = e.pageY;
+
+//                console.log(x_-endY)
+//               x_ =x_ - endX;
+//               y_ =y_ + ((x - startX)*0.1);
+//               console.log(x_)
+//                oList.style.transform = "translate(-50%,-65%) rotateY("+y_+"deg) rotateX("+x_+"deg)";
+// 不能使用这个方法的原因是x_每触发一次鼠标移动事件，就会被赋值一次，而上面的方法是每次触发鼠标移动事件都不会让x_重新赋值
+            }
+            this.onmouseup = function(){
+                x_ = x_ - endY;
+                y_ = y_ + endX;
+                timer = setInterval(function(){
+                    nX *= 0.95;
+                    nY *= 0.95;
+                    x_ -= nY*0.3;
+                    y_ += nX*0.1;
+                    if(Math.abs(nX)<=0.1&&Math.abs(nY)<=0.1) {
+                        clearInterval(timer);
+                    }
+                    oList.style.transform = "translate(-50%,-65%) rotateX("+x_+"deg) rotateY("+y_+"deg)";
+                },13);
+                this.onmousemove = null;
+            }
+        }
+    </script>
+</body>
+</html>

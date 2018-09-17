@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0; }
+
+body {
+  background: #000000; }
+
+#btn {
+  position: absolute;
+  top: 100px;
+  left: 300px;
+  cursor: pointer; }
+
+#can {
+  background: #fff;
+  margin: 50px auto;
+  display: block;
+  box-shadow: 0 0 10px blue inset;
+  border-radius: 5px; }
+
+/*# sourceMappingURL=index.css.map */

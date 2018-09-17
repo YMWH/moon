@@ -1,0 +1,13 @@
+* { margin: 0; padding: 0; font-size: 62.5%; font-family: "Microsoft YaHei UI"; }
+
+body, html { height: 100%; }
+
+body { background: #000; perspective: 800px; overflow: hidden; }
+
+li { text-decoration: none; }
+
+#list { position: absolute; top: 50%; left: 50%; width: 100px; height: 150px; transform: translate(-50%, -65%) rotateX(-10deg) rotateY(0deg); transform-style: preserve-3d; }
+#list ul .list_li { position: absolute; top: 0; left: 0; width: 100px; height: 150px; box-shadow: 0 0 10px rgba(255, 0, 0, 0.6) inset; display: block; background-position: center; background-size: cover; overflow: hidden; -webkit-box-reflect: below 5px -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0) 100%); }
+#list #footer { width: 750px; height: 750px; position: absolute; background: -webkit-radial-gradient(center center, 600px 600px, rgba(255, 255, 255, 0.2), black); transform: rotateX(90deg); top: -225px; left: -320px; transform-origin: center; border-radius: 60%; }
+
+/*# sourceMappingURL=nav.css.map */
